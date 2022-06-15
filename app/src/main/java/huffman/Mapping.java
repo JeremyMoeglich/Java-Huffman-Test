@@ -2,23 +2,24 @@ package huffman;
 
 import java.util.HashMap;
 
+import huffman.bits.Bits;
+
 public class Mapping {
-    public static HashMap<Character, boolean[]> create(Node tree) {
-        HashMap<Character, boolean[]> mapping = new HashMap<>();
+    public static HashMap<Character, Bits> create(Node tree) {
+        HashMap<Character, Bits> mapping = new HashMap<>();
         if (tree.value != null) {
-            mapping.put(tree.value, new boolean[] {});
+            mapping.put(tree.value, new Bits());
             return mapping;
         }
 
-        HashMap<Character, boolean[]> left = pushOntoStart(create(tree.left), false);
-        HashMap<Character, boolean[]> right = pushOntoStart(create(tree.right), true);
+        HashMap<Character, Bits> left = pushOntoStart(create(tree.left), false);
+        HashMap<Character, Bits> right = pushOntoStart(create(tree.right), true);
 
         return merge(left, right);
     }
 
-
-    static HashMap<Character, boolean[]> merge(HashMap<Character, boolean[]> left, HashMap<Character, boolean[]> right) {
-        HashMap<Character, boolean[]> result = new HashMap<>();
+    static HashMap<Character, Bits> merge(HashMap<Character, Bits> left, HashMap<Character, Bits> right) {
+        HashMap<Character, Bits> result = new HashMap<>();
         for (Character key : left.keySet()) {
             result.put(key, left.get(key));
         }
@@ -28,20 +29,10 @@ public class Mapping {
         return result;
     }
 
-    static HashMap<Character, boolean[]> pushOntoStart(HashMap<Character, boolean[]> mapping, boolean value) {
-        HashMap<Character, boolean[]> newMapping = new HashMap<>();
+    static HashMap<Character, Bits> pushOntoStart(HashMap<Character, Bits> mapping, boolean value) {
         for (Character key : mapping.keySet()) {
-            newMapping.put(key, pushOntoStart(mapping.get(key), value));
+            mapping.get(key).pushStart(value);
         }
-        return newMapping;
-    }
-
-    static boolean[] pushOntoStart(boolean[] arr, boolean val) {
-        boolean[] newArr = new boolean[arr.length + 1];
-        newArr[0] = val;
-        for (int i = 0; i < arr.length; i++) {
-            newArr[i + 1] = arr[i];
-        }
-        return newArr;
+        return mapping;
     }
 }

@@ -143,19 +143,19 @@ public class BitsTest {
 
     @Test
     public void bitSlicerTest() throws DecoderException {
-        Bits bits = Bits.fromZeroOneSequence("00011001");
+        Bits bits = Bits.fromBits("00011001");
         bits.applyBitSlicer(new ZeroBitSlicer());
         assertEquals("11001", bits.toString());
     }
 
     @Test
     public void bitReaderTest() throws DecoderException {
-        Bits bits = Bits.fromZeroOneSequence("11100010_10001000_10011000 10101");
+        Bits bits = Bits.fromBits("11100010_10001000_10011000 10101");
         Character character = bits.applyBitReader(new UTF8Reader());
         assertEquals("10101", bits.toString());
         assertEquals('∘', character.charValue());
 
-        bits = Bits.fromZeroOneSequence("01101111 1101");
+        bits = Bits.fromBits("01101111 1101");
         character = bits.applyBitReader(new UTF8Reader());
         assertEquals("1101", bits.toString());
         assertEquals('o', character.charValue());
@@ -163,8 +163,16 @@ public class BitsTest {
 
     @Test(expected = DecoderException.class)
     public void bitReaderTest2() throws DecoderException {
-        Bits bits = Bits.fromZeroOneSequence("11100010_10001000_10");
+        Bits bits = Bits.fromBits("11100010_10001000_10");
         bits.applyBitReader(new UTF8Reader());
+    }
+
+    @Test
+    public void bitsEncoding() {
+        Bits bits = Bits.fromBits("10111011");
+        byte[] encoded = bits.encode();
+        Bits bits2 = Bits.decode(encoded);
+        assertEquals("10111011", bits2.toString());
     }
 
 }

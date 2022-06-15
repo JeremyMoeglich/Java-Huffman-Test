@@ -2,24 +2,20 @@ package huffman;
 
 import java.util.Arrays;
 
+import org.apache.commons.codec.DecoderException;
+
+import huffman.bits.Bits;
+import huffman.bits.bitreader.TreeReader;
+
 public class Decode {
-    public static String decode(byte[] bytes) {
-        String stringified = new String(bytes);
-        DeserializeResult result = Serialize.deserializeWithIndex(stringified);
-        Node tree = result.node;
-        int index = result.endIndex;
-
-        int length = Integer.parseInt(stringified.charAt(index + 1) + "");
-
-        byte[] encoded = Arrays.copyOfRange(bytes, index + 2, bytes.length);
-        return decodeData(encoded, tree, length);
+    public static String decode(Bits bits) throws DecoderException {
+        Node tree = bits.applyBitReader(new TreeReader());
+        return decodeData(bits, tree);
     }
 
-    public static String decodeData(byte[] bytes, Node tree, int removeAmount) {
+    public static String decodeData(Bits bits, Node tree) {
         String decoded = "";
         Node currentNode = tree;
-
-        boolean[] bits = Arrays.copyOfRange(Utils.getBooleanArray(bytes), 0, bytes.length * 8 - removeAmount);
         
         for (boolean bit : bits) {
             if (bit) {

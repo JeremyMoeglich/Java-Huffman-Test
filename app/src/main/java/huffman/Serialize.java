@@ -1,5 +1,7 @@
 package huffman;
 
+import huffman.bits.Bits;
+
 class DeserializeResult {
     final public Node node;
     final public Integer endIndex;
@@ -11,32 +13,17 @@ class DeserializeResult {
 }
 
 public class Serialize {
-    public static String serialize(Node node) {
+    public static Bits serialize(Node node) {
         if (node.value == null) {
-            return "n" + serialize(node.left) + serialize(node.right);
+            Bits left = serialize(node.left);
+            Bits right = serialize(node.right);
+            Bits merged = Bits.merge(left, right);
+            merged.pushStart(true);
+            return merged;
         } else {
-            return "c" + node.value;
+            Bits bits = new Bits(node.value.toString());
+            bits.pushStart(false);
+            return bits;
         }
-    }
-
-    public static Node deserialize(String str) {
-        return deserializeWithIndex(str).node;
-    }
-
-    static DeserializeResult deserializeWithIndex(String str) {
-        switch (str.charAt(0)) {
-            case 'n':
-                Integer i = 1;
-                DeserializeResult left_result = deserializeWithIndex(str.substring(i));
-                i += left_result.endIndex + 1;
-                DeserializeResult right_result = deserializeWithIndex(str.substring(i));
-                i += right_result.endIndex;
-                return new DeserializeResult(new Node(left_result.node, right_result.node), i);
-            case 'c':
-                return new DeserializeResult(new Node(str.charAt(1)), 1);
-            default:
-                throw new IllegalArgumentException("Invalid state");
-        }
-        
     }
 }

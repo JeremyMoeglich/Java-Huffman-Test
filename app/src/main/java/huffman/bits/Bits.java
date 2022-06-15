@@ -1,5 +1,6 @@
 package huffman.bits;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -57,11 +58,21 @@ public class Bits implements Iterable<Boolean> {
         end = booleans.length;
     }
 
+    public Bits(int v, int bit_amount) {
+        byte[] bytes = ByteBuffer.allocate(4).putInt(v).array();
+        end = 32;
+        this.bytes = new ArrayList<>();
+        for (byte b : bytes) {
+            this.bytes.add(b);
+        }
+        slice(-bit_amount);
+    }
+
     int offsetIndex(int index) {
         return start + index;
     }
 
-    public static Bits fromZeroOneSequence(String sequence) {
+    public static Bits fromBits(String sequence) {
         Bits bits = new Bits();
         for (char c : sequence.trim().replace(" ", "").replace("_", "").toCharArray()) {
             if (c == '0') {
@@ -319,6 +330,26 @@ public class Bits implements Iterable<Boolean> {
         return value;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
+        }
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Bits)) {
+            return false;
+        }
+        Bits otherBits = (Bits) other;
+        for (int i = 0; i < length(); i++) {
+            if (get(i) != otherBits.get(i)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     static byte[] littleBigEndianConvert(byte[] bytes) {
         byte[] newBytes = new byte[bytes.length];
         for (int i = 0; i < bytes.length; i++) {
@@ -438,5 +469,21 @@ public class Bits implements Iterable<Boolean> {
             }
             start++;
         }
+    }
+
+    public byte[] encode() {
+        int offsetBitAmount = 3;
+        int offset = 8 - (length() + offsetBitAmount) % 8;
+        Bits offsetBits = new Bits(offset, offsetBitAmount);
+        Bits result = merge(offsetBits, this);
+        return result.getBytes();
+    }
+
+    public static Bits decode(byte[] bytes) {
+        Bits result = new Bits(bytes);
+        Bits offsetBits = result.getSlice(0, 3);
+        int offset = offsetBits.toInt();
+        result.slice(3, result.length() - offset);
+        return result;
     }
 }

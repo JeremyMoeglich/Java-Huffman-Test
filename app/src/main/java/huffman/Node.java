@@ -1,5 +1,7 @@
 package huffman;
 
+import huffman.bits.Bits;
+
 public class Node {
     final public Node left;
     final public Node right;
@@ -41,7 +43,7 @@ public class Node {
         }
     }
 
-    public String serialize() {
+    public Bits serialize() {
         return Serialize.serialize(this);
     }
 }
