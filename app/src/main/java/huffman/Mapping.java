@@ -7,13 +7,15 @@ public class Mapping {
         HashMap<Character, boolean[]> mapping = new HashMap<>();
         if (tree.value != null) {
             mapping.put(tree.value, new boolean[] {});
+            return mapping;
         }
 
         HashMap<Character, boolean[]> left = pushOntoStart(create(tree.left), false);
-        HashMap<Character, boolean[]> right = pushOntoStart(create(tree.left), true);
+        HashMap<Character, boolean[]> right = pushOntoStart(create(tree.right), true);
 
         return merge(left, right);
     }
+
 
     static HashMap<Character, boolean[]> merge(HashMap<Character, boolean[]> left, HashMap<Character, boolean[]> right) {
         HashMap<Character, boolean[]> result = new HashMap<>();
