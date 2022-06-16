@@ -6,7 +6,7 @@ import java.util.HashMap;
 import huffman.bits.Bits;
 
 public class Encode {
-    static Bits mapByTree(Node tree, String string) {
+    public static Bits mapByTree(Node tree, String string) {
         HashMap<Character, Bits> mapping = Mapping.create(tree);
         Bits encoded = new Bits();
         char[] chars = string.toCharArray();
@@ -16,16 +16,20 @@ public class Encode {
         return encoded;
     }
 
+    public static Bits encodeByTree(String str, Node tree) {
+        Bits bits = mapByTree(tree, str);
+
+        return Bits.merge(
+                tree.serialize(),
+                bits);
+    }
+
     public static Bits encode(String str) {
         if (str == null || str.isEmpty()) {
             return new Bits();
         }
 
         Node tree = TreeCreator.create(str);
-        Bits bits = mapByTree(tree, str);
-
-        return Bits.merge(
-                tree.serialize(),
-                bits);
+        return encodeByTree(str, tree);
     }
 }

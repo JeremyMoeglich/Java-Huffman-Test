@@ -23,12 +23,13 @@ public class UTF8Reader implements BitReader<Character> {
             bit_amount = 32;
         }
 
+        stringBits.push(bit);
+        index++;
+
         if (index == bit_amount) {
             return false;
         }
 
-        stringBits.push(bit);
-        index++;
         return true;
     }
 

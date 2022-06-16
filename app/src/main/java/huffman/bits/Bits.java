@@ -59,16 +59,20 @@ public class Bits implements Iterable<Boolean> {
     }
 
     public Bits(int v, int bit_amount) {
-        byte[] bytes = ByteBuffer.allocate(4).putInt(v).array();
+        byte[] big_endian = ByteBuffer.allocate(4).putInt(v).array();
+        byte[] little_endian = littleBigEndianConvert(big_endian);
         end = 32;
         this.bytes = new ArrayList<>();
-        for (byte b : bytes) {
+        for (byte b : little_endian) {
             this.bytes.add(b);
         }
         slice(-bit_amount);
     }
 
     int offsetIndex(int index) {
+        if (index < 0) {
+            index = length() + index;
+        }
         return start + index;
     }
 
@@ -129,7 +133,7 @@ public class Bits implements Iterable<Boolean> {
             }
             newBytes.add(Utils.toByteArray(booleans)[0]);
         } else {
-            int startOffset = 8 - start % 8;
+            int startOffset = 7 - (start + 7) % 8;
             int endOffset = end % 8;
             ArrayList<Boolean> currentChunk = new ArrayList<>();
             for (int publicBitIndex = 0; publicBitIndex < startOffset; publicBitIndex++) {
@@ -138,12 +142,16 @@ public class Bits implements Iterable<Boolean> {
             for (int internalByteIndex = endByteRound(start); internalByteIndex < startByteRound(
                     end); internalByteIndex++) {
                 byte b = bytes.get(internalByteIndex);
-                boolean[] booleans = Utils.getBooleanArray(b);
-                for (boolean b1 : booleans) {
-                    currentChunk.add(b1);
-                    if (currentChunk.size() == 8) {
-                        newBytes.add(Utils.toByteArray(Utils.toPrimitiveArray(currentChunk))[0]);
-                        currentChunk = new ArrayList<>();
+                if (startOffset == 0) {
+                    newBytes.add(b);
+                } else {
+                    boolean[] booleans = Utils.getBooleanArray(b);
+                    for (boolean b1 : booleans) {
+                        currentChunk.add(b1);
+                        if (currentChunk.size() == 8) {
+                            newBytes.add(Utils.toByteArray(Utils.toPrimitiveArray(currentChunk))[0]);
+                            currentChunk = new ArrayList<>();
+                        }
                     }
                 }
             }
@@ -438,7 +446,7 @@ public class Bits implements Iterable<Boolean> {
     public int toInt() {
         int result = 0;
         for (int i = 0; i < length(); i++) {
-            if (get(i)) {
+            if (get(-i - 1)) {
                 result |= 1 << i;
             }
         }
@@ -450,11 +458,9 @@ public class Bits implements Iterable<Boolean> {
             if (length() == 0) {
                 return bitReader.end();
             }
-            boolean bit = get(0);
-            if (!bitReader.readBit(bit, this)) {
+            if (!bitReader.readBit(pop(0), this)) {
                 return bitReader.output();
             }
-            start++;
         }
     }
 
@@ -473,7 +479,7 @@ public class Bits implements Iterable<Boolean> {
 
     public byte[] encode() {
         int offsetBitAmount = 3;
-        int offset = 8 - (length() + offsetBitAmount) % 8;
+        int offset = 7 - (length() + offsetBitAmount + 7) % 8;
         Bits offsetBits = new Bits(offset, offsetBitAmount);
         Bits result = merge(offsetBits, this);
         return result.getBytes();

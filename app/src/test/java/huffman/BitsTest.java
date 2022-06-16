@@ -9,8 +9,6 @@ import huffman.bits.bitreader.ZeroBitSlicer;
 
 import static org.junit.Assert.*;
 
-import java.nio.charset.StandardCharsets;
-import java.util.BitSet;
 
 public class BitsTest {
     @Test
