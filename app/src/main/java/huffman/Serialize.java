@@ -1,6 +1,6 @@
 package huffman;
 
-import huffman.bits.Bits;
+import huffman.Bits.Bits;
 
 class DeserializeResult {
     final public Node node;

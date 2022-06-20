@@ -2,7 +2,7 @@ package huffman;
 
 import java.util.HashMap;
 
-import huffman.bits.Bits;
+import huffman.Bits.Bits;
 
 public class Mapping {
     public static HashMap<Character, Bits> create(Node tree) {

@@ -2,9 +2,9 @@ package huffman;
 
 import org.junit.Test;
 
-import huffman.bits.Bits;
-import huffman.bits.bitreader.HuffmanReader;
-import huffman.bits.bitreader.StringDecodeReader;
+import huffman.Bits.Bits;
+import huffman.bitreader.HuffmanReader;
+import huffman.bitreader.StringDecodeReader;
 
 import static org.junit.Assert.*;
 

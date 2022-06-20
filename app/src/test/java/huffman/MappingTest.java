@@ -2,7 +2,7 @@ package huffman;
 
 import org.junit.Test;
 
-import huffman.bits.Bits;
+import huffman.Bits.Bits;
 
 import static org.junit.Assert.*;
 

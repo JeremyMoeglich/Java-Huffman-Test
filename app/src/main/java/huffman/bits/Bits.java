@@ -1,25 +1,15 @@
-package huffman.bits;
+package huffman.Bits;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.StringUtils;
-import org.apache.commons.lang3.ArrayUtils;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.io.BaseEncoding.DecodingException;
-
-import huffman.Utils;
-import huffman.bits.bitreader.BitReader;
-import huffman.bits.bitreader.BitSlicer;
+import huffman.bitreader.BitReader;
+import huffman.bitreader.BitSlicer;
 
 public class Bits implements Iterable<Boolean> {
     private ArrayList<Byte> bytes;
@@ -50,7 +40,7 @@ public class Bits implements Iterable<Boolean> {
     }
 
     public Bits(boolean[] booleans) {
-        byte[] bytes = Utils.toByteArray(booleans);
+        byte[] bytes = BitUtils.toByteArray(booleans);
         this.bytes = new ArrayList<>();
         for (byte b : bytes) {
             this.bytes.add(b);
@@ -97,7 +87,7 @@ public class Bits implements Iterable<Boolean> {
         index = offsetIndex(index);
 
         byte b = bytes.get(index / 8);
-        boolean[] booleans = Utils.getBooleanArray(b);
+        boolean[] booleans = BitUtils.getBooleanArray(b);
         return booleans[index % 8];
     }
 
@@ -131,7 +121,7 @@ public class Bits implements Iterable<Boolean> {
             for (int i = 0; i < end - start; i++) {
                 booleans[i] = get(i);
             }
-            newBytes.add(Utils.toByteArray(booleans)[0]);
+            newBytes.add(BitUtils.toByteArray(booleans)[0]);
         } else {
             int startOffset = 7 - (start + 7) % 8;
             int endOffset = end % 8;
@@ -145,11 +135,11 @@ public class Bits implements Iterable<Boolean> {
                 if (startOffset == 0) {
                     newBytes.add(b);
                 } else {
-                    boolean[] booleans = Utils.getBooleanArray(b);
+                    boolean[] booleans = BitUtils.getBooleanArray(b);
                     for (boolean b1 : booleans) {
                         currentChunk.add(b1);
                         if (currentChunk.size() == 8) {
-                            newBytes.add(Utils.toByteArray(Utils.toPrimitiveArray(currentChunk))[0]);
+                            newBytes.add(BitUtils.toByteArray(BitUtils.toPrimitiveArray(currentChunk))[0]);
                             currentChunk = new ArrayList<>();
                         }
                     }
@@ -158,12 +148,12 @@ public class Bits implements Iterable<Boolean> {
             for (int publicBitIndex = length() - endOffset; publicBitIndex < length(); publicBitIndex++) {
                 currentChunk.add(get(publicBitIndex));
                 if (currentChunk.size() == 8) {
-                    newBytes.add(Utils.toByteArray(Utils.toPrimitiveArray(currentChunk))[0]);
+                    newBytes.add(BitUtils.toByteArray(BitUtils.toPrimitiveArray(currentChunk))[0]);
                     currentChunk = new ArrayList<>();
                 }
             }
             if (currentChunk.size() > 0) {
-                newBytes.add(Utils.toByteArray(Utils.toPrimitiveArray(currentChunk))[0]);
+                newBytes.add(BitUtils.toByteArray(BitUtils.toPrimitiveArray(currentChunk))[0]);
             }
         }
 
@@ -182,7 +172,7 @@ public class Bits implements Iterable<Boolean> {
     }
 
     static String toString(byte b) {
-        boolean[] booleans = Utils.getBooleanArray(b);
+        boolean[] booleans = BitUtils.getBooleanArray(b);
         StringBuilder sb = new StringBuilder();
         for (boolean b1 : booleans) {
             sb.append(b1 ? "1" : "0");
@@ -205,9 +195,9 @@ public class Bits implements Iterable<Boolean> {
         index = offsetIndex(index);
 
         byte b = bytes.get(index / 8);
-        boolean[] booleans = Utils.getBooleanArray(b);
+        boolean[] booleans = BitUtils.getBooleanArray(b);
         booleans[index % 8] = value;
-        bytes.set(index / 8, Utils.toByteArray(booleans)[0]);
+        bytes.set(index / 8, BitUtils.toByteArray(booleans)[0]);
     }
 
     public void push(boolean value) {
@@ -231,7 +221,7 @@ public class Bits implements Iterable<Boolean> {
     }
 
     public void push(byte b) {
-        boolean[] booleans = Utils.getBooleanArray(b);
+        boolean[] booleans = BitUtils.getBooleanArray(b);
         for (boolean value : booleans) {
             push(value);
         }
@@ -284,7 +274,7 @@ public class Bits implements Iterable<Boolean> {
     }
 
     public void pushStart(byte b) {
-        boolean[] booleans = Utils.getBooleanArray(b);
+        boolean[] booleans = BitUtils.getBooleanArray(b);
         pushStart(booleans);
     }
 
@@ -361,7 +351,7 @@ public class Bits implements Iterable<Boolean> {
     static byte[] littleBigEndianConvert(byte[] bytes) {
         byte[] newBytes = new byte[bytes.length];
         for (int i = 0; i < bytes.length; i++) {
-            newBytes[i] = Utils.reverseBitsByte(bytes[i]);
+            newBytes[i] = BitUtils.reverseBitsByte(bytes[i]);
         }
         return newBytes;
     }

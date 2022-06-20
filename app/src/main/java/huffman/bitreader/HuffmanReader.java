@@ -1,9 +1,9 @@
-package huffman.bits.bitreader;
+package huffman.bitreader;
 
 import org.apache.commons.codec.DecoderException;
 
 import huffman.Node;
-import huffman.bits.Bits;
+import huffman.Bits.Bits;
 
 public class HuffmanReader implements BitReader<String> {
     Node tree;

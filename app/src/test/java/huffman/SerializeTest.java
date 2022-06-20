@@ -2,8 +2,8 @@ package huffman;
 
 import org.junit.Test;
 
-import huffman.bits.Bits;
-import huffman.bits.bitreader.TreeReader;
+import huffman.Bits.Bits;
+import huffman.bitreader.TreeReader;
 
 import static org.junit.Assert.*;
 

@@ -1,9 +1,8 @@
 package huffman;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import huffman.bits.Bits;
+import huffman.Bits.Bits;
 
 public class Encode {
     public static Bits mapByTree(Node tree, String string) {

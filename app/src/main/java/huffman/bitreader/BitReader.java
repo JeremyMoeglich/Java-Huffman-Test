@@ -1,4 +1,4 @@
-package huffman.bits.bitreader;
+package huffman.bitreader;
 
 import org.apache.commons.codec.DecoderException;
 

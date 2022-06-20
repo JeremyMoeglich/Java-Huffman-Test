@@ -1,6 +1,6 @@
-package huffman.bits.bitreader;
+package huffman.bitreader;
 
-import huffman.bits.Bits;
+import huffman.Bits.Bits;
 
 public class ZeroBitSlicer implements BitSlicer {
     @Override

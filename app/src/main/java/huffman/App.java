@@ -5,8 +5,8 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import huffman.bits.Bits;
-import huffman.bits.bitreader.StringDecodeReader;
+import huffman.Bits.Bits;
+import huffman.bitreader.StringDecodeReader;
 
 public class App {
     public static void main(String[] args) throws Exception {

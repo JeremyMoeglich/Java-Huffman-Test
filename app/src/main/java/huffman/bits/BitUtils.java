@@ -1,24 +1,12 @@
-package huffman;
+package huffman.Bits;
 
 import java.util.Arrays;
 import java.util.BitSet;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class Utils {
-    public static <K, V> HashMap<V, K> invertHashMap(HashMap<K, V> map) {
-        HashMap<V, K> inverted = new HashMap<>();
-        for (K key : map.keySet()) {
-            if (inverted.containsKey(map.get(key))) {
-                throw new IllegalArgumentException("Map cannot contain duplicate values");
-            }
-            inverted.put(map.get(key), key);
-        }
-        return inverted;
-    }
-
+public class BitUtils {
     public static boolean[] getBooleanArray(byte b) {
         return getBooleanArray(new byte[] { b });
     }

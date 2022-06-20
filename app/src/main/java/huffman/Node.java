@@ -1,6 +1,6 @@
 package huffman;
 
-import huffman.bits.Bits;
+import huffman.Bits.Bits;
 
 public class Node {
     final public Node left;

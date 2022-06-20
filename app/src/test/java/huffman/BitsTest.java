@@ -3,12 +3,12 @@ package huffman;
 import org.apache.commons.codec.DecoderException;
 import org.junit.Test;
 
-import huffman.bits.Bits;
-import huffman.bits.bitreader.UTF8Reader;
-import huffman.bits.bitreader.ZeroBitSlicer;
+import huffman.Bits.BitUtils;
+import huffman.Bits.Bits;
+import huffman.bitreader.UTF8Reader;
+import huffman.bitreader.ZeroBitSlicer;
 
 import static org.junit.Assert.*;
-
 
 public class BitsTest {
     @Test
@@ -48,7 +48,8 @@ public class BitsTest {
         assertEquals("10011", bits.toString());
         bits.push(false);
         assertEquals("100110", bits.toString());
-        assertArrayEquals(Utils.toByteArray(new boolean[] { true, false, false, true, true, false }), bits.getBytes());
+        assertArrayEquals(BitUtils.toByteArray(new boolean[] { true, false, false, true, true, false }),
+                bits.getBytes());
         assertEquals(false, bits.pop());
         assertEquals("10011", bits.toString());
         assertEquals(false, bits.pop(2));
@@ -128,7 +129,8 @@ public class BitsTest {
         bits.pushStart(false);
         assertEquals("001011110", bits.toString());
         bits.pushStart(
-                Utils.toByteArray(new boolean[] { true, false, true, false, false, true, true, false, true, false }));
+                BitUtils.toByteArray(
+                        new boolean[] { true, false, true, false, false, true, true, false, true, false }));
         assertEquals("1010011010000000001011110", bits.toString());
     }
 
