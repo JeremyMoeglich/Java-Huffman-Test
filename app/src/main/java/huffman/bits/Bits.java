@@ -59,6 +59,16 @@ public class Bits implements Iterable<Boolean> {
         slice(-bit_amount);
     }
 
+    public Bits(int v) {
+        int bit_amount = (int) Math.ceil(Math.log((double) v + 1) / Math.log(2));
+        end = 0;
+        this.bytes = new ArrayList<>();
+        for (int i = 0; i < bit_amount; i++) {
+            pushStart(v % 2 == 1);
+            v /= 2;
+        }
+    }
+
     int offsetIndex(int index) {
         if (index < 0) {
             index = length() + index;

@@ -34,6 +34,9 @@ public class BitsTest {
         assertEquals("101001", bits.toString());
         bits = new Bits("ok");
         assertEquals("0110111101101011", bits.toString());
+        bits = new Bits(11);
+        assertEquals("1011", bits.toString());
+        assertEquals(bits.toInt(), 11);
     }
 
     @Test

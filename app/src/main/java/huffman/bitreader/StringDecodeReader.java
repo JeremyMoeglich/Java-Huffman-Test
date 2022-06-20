@@ -12,7 +12,14 @@ public class StringDecodeReader implements BitReader<String> {
     public boolean readBit(boolean bit, Bits bits) throws DecoderException {
         bits.pushStart(bit);
         Node tree = bits.applyBitReader(new TreeReader());
-        result = bits.applyBitReader(new HuffmanReader(tree));
+        if (tree.value == null) {
+            result = bits.applyBitReader(new HuffmanReader(tree));
+        } else {
+            result = "";
+            for (int i = 0; i < bits.toInt(); i++) {
+                result += tree.value;
+            }
+        }
         return false;
     }
 
@@ -23,6 +30,6 @@ public class StringDecodeReader implements BitReader<String> {
 
     @Override
     public String end() throws DecoderException {
-        throw new DecoderException("Can't decode empty bits");
+        return "";
     }
 }

@@ -6,13 +6,18 @@ import huffman.Bits.Bits;
 
 public class Encode {
     public static Bits mapByTree(Node tree, String string) {
-        HashMap<Character, Bits> mapping = Mapping.create(tree);
-        Bits encoded = new Bits();
-        char[] chars = string.toCharArray();
-        for (char c : chars) {
-            encoded.push(mapping.get(c));
+        if (tree.value == null) {
+            HashMap<Character, Bits> mapping = Mapping.create(tree);
+            Bits encoded = new Bits();
+            char[] chars = string.toCharArray();
+            for (char c : chars) {
+                encoded.push(mapping.get(c));
+            }
+            return encoded;
+        } else {
+            return new Bits(string.length());
         }
-        return encoded;
+
     }
 
     public static Bits encodeByTree(String str, Node tree) {
