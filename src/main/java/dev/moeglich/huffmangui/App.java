@@ -26,6 +26,8 @@ public class App {
         JScrollPane otherScrollPane = new JScrollPane(notesPanel);
         otherScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         otherScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        JScrollBar vertical2 = otherScrollPane.getVerticalScrollBar();
+        vertical2.setUnitIncrement(16);
         tabbedPane.addTab("Notes", otherScrollPane);
 
         // Add the tabbed pane to the window
