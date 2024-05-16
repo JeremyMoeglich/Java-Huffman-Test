@@ -1,4 +1,4 @@
-package dev.moeglich.huffmanapi.bits;
+package dev.moeglich.bitslib;
 
 import java.util.Arrays;
 import java.util.BitSet;

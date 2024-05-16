@@ -1,4 +1,4 @@
-package dev.moeglich.huffmanapi.bits;
+package dev.moeglich.bitslib;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -8,8 +8,8 @@ import java.util.Iterator;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.StringUtils;
 
-import dev.moeglich.huffmanapi.bitreader.BitReader;
-import dev.moeglich.huffmanapi.bitreader.BitSlicer;
+import dev.moeglich.huffmanlib.bitreader.BitReader;
+import dev.moeglich.huffmanlib.bitreader.BitSlicer;
 
 
 public class Bits implements Iterable<Boolean> {

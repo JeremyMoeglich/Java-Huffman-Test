@@ -1,6 +1,6 @@
-package dev.moeglich.huffmanapi.bitreader;
+package dev.moeglich.huffmanlib.bitreader;
 
-import dev.moeglich.huffmanapi.bits.Bits;
+import dev.moeglich.bitslib.Bits;
 
 public class ZeroBitSlicer implements BitSlicer {
     @Override

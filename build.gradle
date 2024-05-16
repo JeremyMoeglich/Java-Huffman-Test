@@ -1,26 +1,41 @@
 plugins {
-	id 'org.springframework.boot' version '3.0.0-M3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '3.0.0-M3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'dev.moeglich'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
-	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'com.google.guava:guava:30.1.1-jre'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'com.google.guava:guava:30.1.1-jre'
     implementation 'org.apache.commons:commons-lang3:3.8.1'
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.9'
+    implementation 'org.postgresql:postgresql:42.5.0'
 }
 
+
+
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+}
+
+tasks.named("bootRun") {
+    mainClass.set('dev.moeglich.huffmanapi.App')
+    jvmArgs = ["-Dspring.profiles.active=dev"]
+}
+
+tasks.register('gui', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'dev.moeglich.huffmangui.App'
 }

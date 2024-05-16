@@ -1,4 +1,4 @@
-package dev.moeglich.huffmanapi;
+package dev.moeglich.huffmanlib;
 
 public class WeightedNode extends Node implements Comparable<WeightedNode> {
     final public Integer weight;

@@ -1,8 +1,8 @@
-package dev.moeglich.huffmanapi.bitreader;
+package dev.moeglich.huffmanlib.bitreader;
 
 import org.apache.commons.codec.DecoderException;
 
-import dev.moeglich.huffmanapi.bits.Bits;
+import dev.moeglich.bitslib.Bits;
 
 
 public class UTF8Reader implements BitReader<Character> {

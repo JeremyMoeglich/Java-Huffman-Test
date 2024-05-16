@@ -4,9 +4,10 @@ package dev.moeglich.huffmanapi;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import dev.moeglich.huffmanapi.bits.Bits;
-
-
+import dev.moeglich.bitslib.Bits;
+import dev.moeglich.huffmanlib.Encode;
+import dev.moeglich.huffmanlib.Mapping;
+import dev.moeglich.huffmanlib.Node;
 
 import java.util.HashMap;
 

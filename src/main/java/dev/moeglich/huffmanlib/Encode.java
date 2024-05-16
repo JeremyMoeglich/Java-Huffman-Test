@@ -1,8 +1,8 @@
-package dev.moeglich.huffmanapi;
+package dev.moeglich.huffmanlib;
 
 import java.util.HashMap;
 
-import dev.moeglich.huffmanapi.bits.Bits;
+import dev.moeglich.bitslib.Bits;
 
 public class Encode {
     public static Bits mapByTree(Node tree, String string) {

@@ -1,9 +1,9 @@
-package dev.moeglich.huffmanapi.bitreader;
+package dev.moeglich.huffmanlib.bitreader;
 
 import org.apache.commons.codec.DecoderException;
 
-import dev.moeglich.huffmanapi.Node;
-import dev.moeglich.huffmanapi.bits.Bits;
+import dev.moeglich.bitslib.Bits;
+import dev.moeglich.huffmanlib.Node;
 
 
 

@@ -3,8 +3,10 @@ package dev.moeglich.huffmanapi;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import dev.moeglich.huffmanapi.bitreader.TreeReader;
-import dev.moeglich.huffmanapi.bits.Bits;
+import dev.moeglich.huffmanlib.bitreader.TreeReader;
+import dev.moeglich.bitslib.Bits;
+import dev.moeglich.huffmanlib.Node;
+import dev.moeglich.huffmanlib.TreeCreator;
 
 import org.apache.commons.codec.DecoderException;
 

@@ -1,4 +1,4 @@
-package dev.moeglich.huffmanapi.bitreader;
+package dev.moeglich.huffmanlib.bitreader;
 
 import org.apache.commons.codec.DecoderException;
 

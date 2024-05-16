@@ -3,9 +3,11 @@ package dev.moeglich.huffmanapi;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-import dev.moeglich.huffmanapi.bitreader.HuffmanReader;
-import dev.moeglich.huffmanapi.bitreader.StringDecodeReader;
-import dev.moeglich.huffmanapi.bits.Bits;
+import dev.moeglich.huffmanlib.bitreader.HuffmanReader;
+import dev.moeglich.huffmanlib.bitreader.StringDecodeReader;
+import dev.moeglich.bitslib.Bits;
+import dev.moeglich.huffmanlib.Encode;
+import dev.moeglich.huffmanlib.Node;
 
 import org.apache.commons.codec.DecoderException;
 

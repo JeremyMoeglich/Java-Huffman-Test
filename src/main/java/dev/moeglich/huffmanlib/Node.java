@@ -1,6 +1,6 @@
-package dev.moeglich.huffmanapi;
+package dev.moeglich.huffmanlib;
 
-import dev.moeglich.huffmanapi.bits.Bits;
+import dev.moeglich.bitslib.Bits;
 
 public class Node {
     final public Node left;

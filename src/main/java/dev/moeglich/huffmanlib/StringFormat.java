@@ -1,4 +1,4 @@
-package dev.moeglich.huffmanapi;
+package dev.moeglich.huffmanlib;
 
 import java.util.ArrayList;
 import java.util.Arrays;
