@@ -16,10 +16,26 @@ class NotePanel extends JPanel {
     private MouseAdapter viewNoteListener;
     private ActionListener deleteNoteListener;
     private JButton deleteButton;
+    private Consumer<Note> onNoteSelected;
 
-    public NotePanel(Note note, Consumer<Note> onNoteSelected, Consumer<Note> onNoteDeleted) {
-        this.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 15));
-        this.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+    public NotePanel(Note note, Consumer<Note> onNoteSelected) {
+        this.setLayout(new GridBagLayout());
+
+        this.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10, 10, 10, 10),
+                this.getBorder()));
+
+        this.onNoteSelected = onNoteSelected;
+        this.load_note(note);
+    }
+
+    public void removeListeners() throws IllegalStateException {
+        deleteButton.removeActionListener(deleteNoteListener);
+        this.removeMouseListener(viewNoteListener);
+    }
+
+    void load_note(Note note) {
+        GridBagConstraints gbc = new GridBagConstraints();
 
         String decoded;
         try {
@@ -28,8 +44,14 @@ class NotePanel extends JPanel {
             decoded = "Error decoding note";
         }
 
-        int trimLength = 15;
-        String trimmed = (decoded.length() > trimLength) ? decoded.substring(0, trimLength) + "..." : decoded;
+        int trimLength = 20;
+        String trimmed = decoded;
+        if (trimmed.length() > trimLength) {
+            trimmed = trimmed.substring(0, trimLength) + "...";
+        }
+        if (trimmed.length() == 0) {
+            trimmed = "<Empty note>";
+        }
 
         JLabel contentLabel = new JLabel(trimmed);
         JLabel createdAtLabel = new JLabel(note.createdAt.toString());
@@ -38,14 +60,27 @@ class NotePanel extends JPanel {
         contentLabel.setFont(new Font("Arial", Font.BOLD, 14));
         createdAtLabel.setFont(new Font("Arial", Font.ITALIC, 12));
 
-        this.add(contentLabel);
-        this.add(createdAtLabel);
-        this.add(deleteButton);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.gridwidth = 2;
+        this.add(contentLabel, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.gridwidth = 1;
+        this.add(createdAtLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        this.add(deleteButton, gbc);
 
         deleteNoteListener = e -> {
             try {
                 Database.deleteById(note.id);
-                onNoteDeleted.accept(note);
+                onNoteSelected.accept(null);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -60,9 +95,14 @@ class NotePanel extends JPanel {
         this.addMouseListener(viewNoteListener);
     }
 
-    public void removeListeners() {
-        this.deleteButton.removeActionListener(deleteNoteListener);
-        this.removeMouseListener(viewNoteListener);
+    public void replaceNote(Note note) {
+        if (deleteNoteListener != null) {
+            this.removeAll();
+            this.removeListeners();
+        }
+        this.load_note(note);
+        this.revalidate();
+        this.repaint();
     }
 }
 
@@ -100,8 +140,8 @@ public class NotesOverviewPanel extends JPanel {
     public void saveNotePanel(Note note) {
         NotePanel currentPanel = this.notePanels.get(note.id);
         if (currentPanel != null) {
-            currentPanel.removeListeners();
-            this.boxes.remove(currentPanel);
+            currentPanel.replaceNote(note);
+            return;
         }
 
         NotePanel panel = createNotePanel(note);
@@ -111,8 +151,13 @@ public class NotesOverviewPanel extends JPanel {
     }
 
     private NotePanel createNotePanel(Note note) {
-        return new NotePanel(note, this.onNoteSelected, removedNote -> {
-            this.removeNotePanel(removedNote.id);
+        return new NotePanel(note, e -> {
+            if (e == null) {
+                onNoteSelected.accept(null);
+                this.removeNotePanel(note.id);
+                return;
+            }
+            onNoteSelected.accept(e);
         });
     }
 
@@ -125,6 +170,8 @@ public class NotesOverviewPanel extends JPanel {
         this.boxes.remove(panel);
         this.notePanels.remove(noteId);
         this.refresh();
+
+        onNoteSelected.accept(null);
     }
 
     private void refresh() {

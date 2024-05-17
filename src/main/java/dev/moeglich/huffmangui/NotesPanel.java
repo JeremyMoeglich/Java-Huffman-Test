@@ -86,6 +86,12 @@ public class NotesPanel extends JPanel {
 
         overviewPanel = new NotesOverviewPanel(note -> {
             try {
+                if (note == null) {
+                    this.currentNoteId = null;
+                    this.currentNote.setText("");
+                    this.refreshButtonPanel(buttonPanel);
+                    return;
+                }
                 this.currentNoteId = note.id;
                 this.currentNote.setText(Huffman.decode_from_bytes(note.content));
                 this.refreshButtonPanel(buttonPanel);
@@ -134,7 +140,8 @@ public class NotesPanel extends JPanel {
 
             saveExistingListener = e -> {
                 try {
-                    Note updatedNote = Database.update(this.currentNoteId, Huffman.encode_to_bytes(this.currentNote.getText()));
+                    Note updatedNote = Database.update(this.currentNoteId,
+                            Huffman.encode_to_bytes(this.currentNote.getText()));
                     overviewPanel.saveNotePanel(updatedNote);
                 } catch (Exception ex) {
                     ex.printStackTrace();

@@ -5,7 +5,6 @@ import java.util.Base64;
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import dev.moeglich.huffmanlib.Huffman;
-import net.miginfocom.swing.MigLayout;
 
 public class ConvertPanel extends JPanel {
     private UndoableTextArea decodedText;
@@ -14,51 +13,96 @@ public class ConvertPanel extends JPanel {
     private JLabel encodedLabel;
 
     public ConvertPanel() {
-        // Use MigLayout instead of BorderLayout and GridBagLayout
         this.setLayout(new BorderLayout());
+        
+        GridBagConstraints gbc = new GridBagConstraints();
 
-        JPanel grid = new JPanel(new MigLayout("fillx", "[right]rel[grow, fill]", "[]10[]10[]10[]"));
+        JPanel grid = new JPanel(new GridBagLayout());
         this.add(grid, BorderLayout.CENTER);
+
 
         JLabel title = new JLabel("Convert Text to Huffman Code");
         title.setFont(new Font("Arial", Font.BOLD, 20));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         title.setForeground(Color.BLACK);
-        grid.add(title, "span, center, wrap");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(10, 10, 20, 10);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+        grid.add(title, gbc);
+
+        gbc.gridwidth = 1;
+        gbc.weighty = 1;
 
         this.decodedLabel = new JLabel();
-        grid.add(this.decodedLabel, "right");
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.weighty = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        grid.add(this.decodedLabel, gbc);
 
         this.decodedText = new UndoableTextArea();
         this.decodedText.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         this.decodedText.setLineWrap(true);
         this.decodedText.setWrapStyleWord(true);
         JScrollPane decodedScrollPane = new JScrollPane(this.decodedText);
-        grid.add(decodedScrollPane, "grow, wrap");
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        grid.add(decodedScrollPane, gbc);
 
         this.encodedLabel = new JLabel();
-        grid.add(this.encodedLabel, "right");
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0;
+        grid.add(this.encodedLabel, gbc);
 
         this.encodedText = new UndoableTextArea();
         this.encodedText.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         this.encodedText.setLineWrap(true);
         this.encodedText.setWrapStyleWord(true);
         JScrollPane encodedScrollPane = new JScrollPane(this.encodedText);
-        grid.add(encodedScrollPane, "grow, wrap");
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
+        grid.add(encodedScrollPane, gbc);
 
-        JPanel buttonPanel = new JPanel(new MigLayout("", "[][]", "[]"));
-        grid.add(buttonPanel, "span, center, wrap");
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 2;
+        gbc.weighty = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        grid.add(buttonPanel, gbc);
+
+        GridBagConstraints buttonGbc = new GridBagConstraints();
+        buttonGbc.insets = new Insets(5, 5, 5, 5);
 
         JButton encodeButton = new JButton("Encode");
-        buttonPanel.add(encodeButton, "cell 0 0");
+        buttonGbc.gridx = 0;
+        buttonGbc.gridy = 0;
+        buttonPanel.add(encodeButton, buttonGbc);
 
         JButton decodeButton = new JButton("Decode");
-        buttonPanel.add(decodeButton, "cell 1 0");
+        buttonGbc.gridx = 1;
+        buttonGbc.gridy = 0;
+        buttonPanel.add(decodeButton, buttonGbc);
 
         encodeButton.addActionListener(e -> {
             String decoded = decodedText.getText();
             String encoded = Huffman.encode_to_base64(decoded);
             encodedText.setText(encoded);
+
             this.updateLabels();
         });
 
@@ -71,6 +115,7 @@ public class ConvertPanel extends JPanel {
                 decoded = "Error";
             }
             decodedText.setText(decoded);
+
             this.updateLabels();
         });
 
